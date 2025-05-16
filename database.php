@@ -59,6 +59,28 @@
             }
         }
 
+        function update($table, $field, $where)
+        {
+            // $sql = "UPDATE $table SET ";
+            $set = null;
+            $setWhere = null;
+//             UPDATE Customers
+//             SET title = 'tlou', genre= 'horror', 
+//             WHERE id = '1';
+
+            foreach ($field as $key => $value) {
+                $set .= ", " . $key . " = '" . $value . "'";
+            }
+            foreach ($where as $key => $value) {
+                $setWhere = $key . "='" . $value . "'";
+            }
+            $sql = "UPDATE $table SET". substr($set, 1) . "WHERE $setWhere";
+
+            $query = $this->mysqli->prepare($sql) or die($this->mysqli->error);
+            $query->execute();
+
+        }
+
         function __destruct()
         {
             $this->mysqli->close();
